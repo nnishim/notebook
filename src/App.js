@@ -9,6 +9,7 @@ export default class App extends Component {
     records: [{ name: "Книга", price: 0, id: 1, count: 1 }],
     name: "",
     price: 0,
+    total: 0
   };
 
   changeHandler = (event) => {
@@ -21,8 +22,9 @@ export default class App extends Component {
     event.preventDefault();
     const records = [...this.state.records];
 
-    let price = this.state.price;
-    price += price;
+    let total = this.state.total;
+    let price = parseInt(this.state.price)
+    total += price;
 
     const index = this.state.records.findIndex(record => record.name === this.state.name);
     
@@ -31,7 +33,7 @@ export default class App extends Component {
     } else {
       records.push({
         name: this.state.name,
-        price: this.state.price,
+        price,
         id: Date.now(),
         count: 1
       });
@@ -40,10 +42,9 @@ export default class App extends Component {
 
     this.setState({
       records,
-      price,
-      // value: "",
-      // price: "",
-      // name: "",
+      total,
+      price: "",
+      name: "",
     });
   };
 
@@ -58,6 +59,7 @@ export default class App extends Component {
         <form onSubmit={this.handleSubmit} className="form">
           <div className="input__items">
             <input
+              value={this.state.name}
               type="text"
               name='name'
               onChange={this.changeHandler}
@@ -65,6 +67,7 @@ export default class App extends Component {
               className='input__item'
             />
             <input
+              value={this.state.price}
               type="number"
               name="price"
               onChange={this.changeHandler}
@@ -77,7 +80,7 @@ export default class App extends Component {
           {this.state.records.map((record, index) => {
             return <Record key={record.id} value={record.name} price={record.price} count={record.count} remove={() => this.deleteRecord(record.id)}/>;
           })}
-          <Price price={this.state.price}/>
+          <Price price={this.state.total}/>
         </form>
       </div>
     );
